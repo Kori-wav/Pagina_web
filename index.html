@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Køri?</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-y: auto; /* Permitir scroll vertical */
+            background-color: #000;
+            color: #fff;
+            display: flex; /* Usar flex para el layout */
+            flex-direction: column; /* Dirección vertical */
+        }
+
+        /* Fondo animado */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(255, 0, 255, 0.1), rgba(0, 0, 0, 1));
+            animation: move 15s ease infinite;
+        }
+
+        @keyframes move {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(50, 50, 50, 0.8);
+            padding: 10px; /* Reducir el padding para hacer el header más pequeño */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            position: sticky; /* Mantener el header visible al hacer scroll */
+            top: 0;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5em; /* Reducir el tamaño de la fuente del título */
+            color: #00ffcc; /* Color neón para el título */
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .menu-item {
+            margin: 0 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            color: #ffcc00; /* Color neón para los ítems del menú */
+        }
+
+        .menu-item:hover {
+            color: #00ff00; /* Cambia a color verde neón al pasar el mouse */
+            text-shadow: 0 0 10px #00ff00; /* Efecto de resplandor */
+        }
+
+        .menu-item.active {
+            color: #00ff00;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff00; /* Efecto de resplandor */
+        }
+
+        .content {
+            margin: 20px;
+            padding: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            display: flex; /* Usar flex para colocar videos y descripción */
+            justify-content: space-between; /* Espacio entre videos y descripción */
+            align-items: flex-start; /* Alinear items al inicio */
+            min-height: 300px; /* Asegurarse de que haya espacio para el contenido */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .icon {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #ffcc00; /* Color neón para los iconos */
+            font-size: 2em;
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .icon:hover {
+            color: #00ff00; /* Cambia a color verde neón al pasar el mouse */
+            transform: scale(1.1);
+        }
+
+        .icon::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #00ff00; /* Línea inferior verde neón */
+            transition: width 0.3s;
+        }
+
+        .icon:hover::after {
+            width: 100%;
+        }
+
+        /* Sección para los iconos de redes sociales */
+        .social-icons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        /* Estilo para el icono de GitHub al final de la página */
+        .github-icon {
+            margin: 20px;
+            display: inline-block;
+            text-decoration: none;
+            color: #ffcc00; /* Color neón para el icono de GitHub */
+            font-size: 2em;
+            transition: all 0.3s;
+        }
+
+        .github-icon:hover {
+            color: #00ff00; /* Cambia a color verde neón al pasar el mouse */
+            transform: scale(1.1);
+        }
+
+        /* Opciones de idioma al final de la página */
+        .language-options {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #ccc; /* Color menos llamativo */
+        }
+
+        .language-options a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #ffcc00; /* Color neón para las opciones de idioma */
+        }
+
+        .language-options a:hover {
+            color: #00ff00; /* Cambia a color verde neón al pasar el mouse */
+        }
+
+        /* Descripción del artista */
+        .artist-description {
+            margin: 20px;
+            color: #ffffff; /* Color blanco para el texto */
+            font-size: 1.2em;
+            line-height: 1.5; /* Mejorar la legibilidad */
+            max-width: 400px; /* Ancho máximo para la descripción */
+        }
+
+        /* Estilo para la imagen del artista */
+        .artist-image {
+            width: 300px; /* Ancho fijo para la imagen */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            margin-right: 20px; /* Espacio entre imagen y descripción */
+        }
+
+        /* Estilo para la sección de videos */
+        .video-section {
+            flex: 1; /* Tomar el resto del espacio disponible */
+            display: flex;
+            flex-direction: column; /* Colocar videos en columna */
+        }
+
+        /* Separar los videos y el reproductor de Spotify */
+        iframe {
+            margin: 20px 0; /* Espacio vertical entre los videos */
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <header>
+            <h1>¿Køri?</h1>
+            <nav>
+                <ul class="menu">
+                    <li id="music-menu" class="menu-item active">Música & Videos</li>
+                </ul>
+            </nav>
+            <div class="social-icons">
+                <a href="https://open.spotify.com/intl-es/artist/6B8ULpQWO3Cd87GYyd4UAQ?si=0dzTb8_MToSfLhYtettzdQ" target="_blank" class="icon">🎵</a>
+                <a href="https://www.instagram.com/psycosushi/?hl=es" target="_blank" class="icon">📷</a>
+                <a href="https://www.youtube.com/@KøriMusicOficial" target="_blank" class="icon">📺</a>
+            </div>
+        </header>
+
+        <section class="content">
+            <div class="video-section">
+                <h2 id="music-header">Música & Videos</h2>
+                <p id="music-text">Pronto habrá más música disponible.</p>
+                <!-- Reproductor de Spotify -->
+                <iframe src="https://open.spotify.com/embed/track/4DpMMoRdSBMUFa9SpNO257?utm_source=generator" width="560" height="80" frameborder="0" allowfullscreen="" allow="encrypted-media"></iframe>
+                <br>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/hEk3Jf0sY3o" frameborder="0" allowfullscreen></iframe>
+                <br>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/VV8AsrD0v8M" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="artist-description">
+                <img src="https://flic.kr/p/2qpC3E4" alt="Kori" class="artist-image">
+                <h3 id="artist-title">Descripción del Artista</h3>
+                <p id="artist-description">Kori es un talentoso artista originario de Guadalajara, Jalisco. Con tan solo 23 años, ha logrado crear un estilo único que fusiona el trap sad y el rap. Su música está inspirada por artistas como Keyblade y Cyclo, lo que le ha permitido construir un sonido distintivo que resuena con muchos. Siempre en evolución, Kori está dedicado a ofrecer más de su arte al mundo.</p>
+            </div>
+        </section>
+
+        <footer>
+            <a href="https://github.com/Kori-wav" target="_blank" class="github-icon">💻</a>
+            <div class="language-options">
+                <span>Idiomas:</span>
+                <a href="#" onclick="changeLanguage('esp')">esp</a>
+                <a href="#" onclick="changeLanguage('eng')">eng</a>
+                <a href="#" onclick="changeLanguage('Jap')">Jap</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const messages = {
+            esp: {
+                musicAndVideos: "Música & Videos",
+                soon: "Pronto habrá más música disponible.",
+                artistTitle: "Descripción del Artista",
+                artistDescription: "Kori es un talentoso artista originario de Guadalajara, Jalisco. Con tan solo 23 años, ha logrado crear un estilo único que fusiona el trap sad y el rap. Su música está inspirada por artistas como Keyblade y Cyclo, lo que le ha permitido construir un sonido distintivo que resuena con muchos. Siempre en evolución, Kori está dedicado a ofrecer más de su arte al mundo."
+            },
+            eng: {
+                musicAndVideos: "Music & Videos",
+                soon: "More music will be available soon.",
+                artistTitle: "Artist Description",
+                artistDescription: "Kori is a talented artist from Guadalajara, Jalisco. At just 23 years old, he has created a unique style that fuses sad trap and rap. His music is inspired by artists like Keyblade and Cyclo, allowing him to build a distinctive sound that resonates with many. Always evolving, Kori is dedicated to bringing more of his art to the world."
+            },
+            Jap: {
+                musicAndVideos: "音楽と動画",
+                soon: "すぐにもっと音楽が利用可能になります。",
+                artistTitle: "アーティストの説明",
+                artistDescription: "Koriは、ハリスコ州グアダラハラ出身の才能あるアーティストです。わずか23歳で、サッドトラップとラップを融合させた独自のスタイルを作り上げました。彼の音楽は、KeybladeやCycloのようなアーティストからインスパイアされており、多くの人に共鳴する独特のサウンドを構築しています。常に進化し続けているKoriは、彼の芸術を世界に届けることに専念しています。"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const selectedMessages = messages[lang];
+            document.querySelector("#music-menu").textContent = selectedMessages.musicAndVideos;
+            document.querySelector("#music-text").textContent = selectedMessages.soon;
+            document.querySelector("#artist-title").textContent = selectedMessages.artistTitle;
+            document.querySelector("#artist-description").textContent = selectedMessages.artistDescription;
+        }
+    </script>
+</body>
+</html>
